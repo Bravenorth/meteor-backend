@@ -30,10 +30,38 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Password is required'],
     minlength: [6, 'Password must be at least 6 characters long']
   },
+  // New fields for user profile personalization
+  firstName: {
+    type: String,
+    maxlength: [50, 'First name must not exceed 50 characters']
+  },
+  lastName: {
+    type: String,
+    maxlength: [50, 'Last name must not exceed 50 characters']
+  },
+  bio: {
+    type: String,
+    maxlength: [500, 'Bio must not exceed 500 characters']
+  },
+  profilePicture: {
+    type: String, // URL to the profile picture
+    match: [/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/, 'Invalid URL format for profile picture']
+  },
+  // Add any other fields you want
+  updatedAt: {
+    type: Date,
+    default: Date.now
+  },
   createdAt: {
     type: Date,
     default: Date.now
   }
+});
+
+// Update the updatedAt field before saving
+userSchema.pre('save', function(next) {
+  this.updatedAt = Date.now();
+  next();
 });
 
 // Hash password before saving
