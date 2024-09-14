@@ -81,3 +81,36 @@ exports.logout = (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const userId = req.user._id; // Assuming req.user is set by requireAuth middleware
+    const updates = req.body;
+
+    // Validate updates
+    const allowedUpdates = ['firstName', 'lastName', 'bio', 'profilePicture'];
+    const updateKeys = Object.keys(updates);
+    const isValidOperation = updateKeys.every(key => allowedUpdates.includes(key));
+
+    if (!isValidOperation) {
+      return res.status(400).json({ error: 'Invalid updates!' });
+    }
+
+    // Find user and update
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    updateKeys.forEach(key => {
+      user[key] = updates[key];
+    });
+
+    await user.save();
+
+    res.status(200).json({ message: 'Profile updated successfully', user: user });
+  } catch (err) {
+    console.error('Error updating profile:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
