@@ -28,6 +28,7 @@ app.use(cookieParser());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api', protectedRoute);
+app.use('/api/user', userRoutes);
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {
