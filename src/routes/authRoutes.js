@@ -33,6 +33,7 @@ router.post('/logout', async (req, res) => {
   }
 });
 
-// Placeholder for future authentication-related routes
+// Update user profile
+router.put('/profile', requireAuth, userController.updateProfile);
 
 module.exports = router;
