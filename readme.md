@@ -302,6 +302,7 @@ These endpoints require the user to be authenticated. The `user_id` cookie must 
   }
   ```
 
+
 ---
 
 ## **Middleware**
